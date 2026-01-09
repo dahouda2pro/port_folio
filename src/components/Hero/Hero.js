@@ -13,7 +13,7 @@ const Hero = (props) => (
           MWAMBA KASONGO, Ph.D.
         </SectionTitle>
         <SectionText>
-       Software Engineer | Machine & Deep Learning Engineer | Big Data Developer <br />
+       Software Engineer | Data Scientist | Big Data Developer | Machine & Deep Learning Engineer |  <br />
        I am a versatile engineer passionate about building scalable software, designing and deploying AI/ML models, and processing large-scale data. <br />
        With expertise in Python, SQL, big data frameworks, and machine learning pipelines [Kedro, ZenML and Apache Airflow], <br />
        I solve real-world problems by bridging software development, AI, and data engineering.
