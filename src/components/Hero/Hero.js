@@ -9,12 +9,15 @@ const Hero = (props) => (
     <Section row nopadding>
       <LeftSection>
         <SectionTitle main center>
-          Welcome To <br />
-          Dahouda MWAMBA
+          Dahouda <br />
+          MWAMBA KASONGO
         </SectionTitle>
+        💼 Software Engineer | Machine & Deep Learning Engineer | Big Data Developer <br />
+       I am a versatile engineer passionate about building scalable software, designing and deploying AI/ML models, and processing large-scale data. <br />
+       With expertise in Python, SQL, big data frameworks, and machine learning pipelines [Kedro, ZenML and Apache Airflow], <br />
+       I solve real-world problems by bridging software development, AI, and data engineering.
         <SectionText>
-       Mwamba Kasongo Dahouda received a BS in information system engineering from the University Protestant of Lubumbashi, Lubumbashi, DR Congo, 
-       <br /> an MS in software engineering from Hanyang University, Seoul, Korea in 2020; and a Ph.D. in software engineering at Hanyang University, Seoul, Korea
+       software engineer
         </SectionText>
         <Button onClick={props.handleClick}>Learn More</Button>
       </LeftSection>

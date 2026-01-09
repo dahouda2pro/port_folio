@@ -46,7 +46,8 @@ const Timeline = () => {
     <Section id="about">
       <SectionTitle>About Me</SectionTitle>
       <SectionText>
-      The purpose of JavaScript Mastery is to help aspiring and established developers to take their development skills to the next level and build awesome apps.
+     Mwamba Kasongo Dahouda received a BS in information system engineering from the University Protestant of Lubumbashi, Lubumbashi, DR Congo, 
+    an MS in software engineering from Hanyang University, Seoul, Korea in 2020; and a Ph.D. in software engineering at Hanyang University, Seoul, Korea
       </SectionText>
       <CarouselContainer ref={carouselRef} onScroll={handleScroll}>
         <>
