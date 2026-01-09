@@ -11,4 +11,4 @@ In this porfolio, I created a full Personal Development Portfolio. I am going to
 Setup:
 - run ```npm i && npm start```
 
-## Launch your development career with project-based coaching - https://www.jsmastery.pro
+## Launch your development career with project-based coaching - https://www.linkedin.com/in/dahouda2mwamba/
