@@ -1,14 +1,23 @@
-## Dahouda Personal Portfolio
+# Dahouda Mwamba Kasongo — Portfolio
 
-### [Live Site](https://port-folio-ashen.vercel.app/)
+A redesigned, responsive light-theme portfolio built with Next.js, React and styled-components.
 
-![Portfolio Website](https://i.ibb.co/WgPMpts/image.png)
+## Run locally
 
-This is a code repository for the corresponding portfolio. My portfolio is my resume and my business card.
+```bash
+npm install
+npm run dev
+```
 
-In this porfolio, I created a full Personal Development Portfolio. I am going to use React and Next.js.
+## Production build
 
-Setup:
-- run ```npm i && npm start```
+```bash
+npm run build
+npm start
+```
 
-## Launch your development career with project-based coaching - https://www.linkedin.com/in/dahouda2mwamba/
+## Before publishing
+
+Please add/confirm your real professional contact email, LinkedIn URL, GitHub URL, CV PDF, and any public project/research links. The portfolio intentionally does not invent these details or publish private industrial source code or performance figures.
+
+The project descriptions are high-level summaries of representative work and can be edited in `src/pages/index.js`.

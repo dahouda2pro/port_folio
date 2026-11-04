@@ -6,32 +6,34 @@ const GlobalStyles = createGlobalStyle`
 
   * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
   }
+
   html {
-    font-size: 62.5%;
     scroll-behavior: smooth;
-
   }
+
   body {
-    font-family: ${props => props.theme.fonts.main};
-    font-size: 1.6rem;
-    background: ${props => props.theme.colors.background1};
-    color: ${props => props.theme.colors.primary1};
-    cursor: default;
-
-  }
-  h1,h2,h3,h4,h5,h6,button {
-    font-family: ${props => props.theme.fonts.title};
-  }
-  a {
-    text-decoration: none;
-  }
-  li{
-    list-style: none;
+    margin: 0;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 16px;
+    background: #fff;
+    color: #172b46;
+    -webkit-font-smoothing: antialiased;
   }
 
+  button, a {
+    font: inherit;
+  }
+
+  a:focus-visible {
+    outline: 3px solid #8db8f0;
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: #dceaff;
+    color: #14243b;
+  }
 `;
 
 export default GlobalStyles;
