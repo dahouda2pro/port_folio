@@ -144,7 +144,7 @@ export default function Home(){
     <Milestone><small>2020 – 2023</small><h3>Doctorate · Computer Software Engineering</h3><p>Hanyang University, Korea. Research: “NASNet-based Feature Extraction with Modular Neural Network for Image Classification with HPO”.</p></Milestone>
     <Milestone><small>2018 – 2020</small><h3>Master's · Computer Software Engineering</h3><p>Hanyang University, Korea. Thesis: “A DTN gateway-based architecture for web access in the Internet space”.</p></Milestone>
     <Milestone><small>2017 – 2018</small><h3>Korean Proficiency Test · TOPIK Level 3</h3><p>Sunmoon University, Korea.</p></Milestone>
-    <Milestone><small>2008 – 2016</small><h3>Bachelor's Degree · Computer Science</h3><p>Protestant University of Lubumbashi, D.R. Congo. Information Systems Engineering, while the education section labels it Computer Science. Project: “Study of the establishment of an information sharing platform between the territorial divisions of a city”.</p></Milestone>
+    <Milestone><small>2008 – 2016</small><h3>Bachelor's Degree · Computer Science</h3><p>Protestant University of Lubumbashi, D.R. Congo. Information Systems Engineering. Project: “Study of the establishment of an information sharing platform between the territorial divisions of a city”.</p></Milestone>
     <Milestone><small>1999 – 2006</small><h3>Scientific Section Diploma</h3><p>Kiwele High School, Lubumbashi, D.R. Congo.</p></Milestone>
     <Milestone><small>1992 – 1998</small><h3>Primary School Certificate</h3><p>Malkia Wa Amani Primary School, Lubumbashi, D.R. Congo.</p></Milestone>
    </Timeline></Section>
