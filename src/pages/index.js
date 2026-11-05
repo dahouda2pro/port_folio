@@ -152,7 +152,7 @@ const Home = () => {
       <Section id="contact" style={{ borderBottom: 0, paddingBottom: 45 }}>
         <Contact><div><Eyebrow>{t.start}</Eyebrow><H2 style={{ fontSize: 32 }}>{t.build}</H2><SectionIntro>{t.open}</SectionIntro></div>
         <span style={{ fontSize: 12, color: "#718096", fontWeight: 600 }}>
-          <a href="mailto:dahouda37@gmail.com" style={{ color: "#2468c7", fontWeight: 700, textDecoration: "none" }}>dahouda37@gmail.com</a>
+          <a href="mailto:dahouda37@gmail.com" style={{ color: "#2468c7", fontWeight: 700, textDecoration: "none" }}>dahouda37@gmail.com</a><br/>
           <a href="mailto:dahouda37@hanyang.ac.kr" style={{ color: "#2468c7", fontWeight: 700, textDecoration: "none" }}>dahouda37@hanyang.ac.kr</a>
         </span></Contact></Section>
       <Footer><span>© {new Date().getFullYear()} Dahouda Mwamba Kasongo. {t.rights}</span><span><a href="https://www.linkedin.com/in/dahouda2mwamba/" target="_blank" rel="noreferrer">{t.linkedin}</a><a href="https://www.researchgate.net/profile/Dahouda-Mwamba" target="_blank" rel="noreferrer">{t.researchgate}</a><a href="https://github.com/dahouda2pro" target="_blank" rel="noreferrer">GitHub</a><a href="https://scholar.google.com/citations?user=Bzi--3IAAAAJ&hl=en" target="_blank" rel="noreferrer">{t.scholarLink}</a></span></Footer>
