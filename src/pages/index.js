@@ -59,12 +59,77 @@ const Skill = styled.article`padding:24px;border:1px solid #e7edf4;border-radius
  svg{color:#3978d5;font-size:22px}h3{font-size:17px;color:#1c304b;margin:17px 0 8px}p{font-size:14px;line-height:1.75;color:#78869a}`;
 const ProjectGrid = styled.div`display:grid;grid-template-columns:repeat(2,1fr);gap:18px;
  @media(max-width:700px){grid-template-columns:1fr}`;
-const Project = styled.article`padding:26px;border:1px solid #e5ebf3;border-radius:14px;background:#fff;
- .top{display:flex;justify-content:space-between;align-items:center;color:#3978d5}
- h3{font-size:20px;letter-spacing:-.025em;color:#1b2e49;margin:20px 0 10px}
- p{font-size:15px;line-height:1.8;color:#718096;min-height:70px}
- .tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:18px}
- .tags span{font-size:12px;color:#526982;background:#f1f5fa;padding:6px 9px;border-radius:20px}`;
+const Project = styled.article`
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+  padding: 26px;
+  border: 1px solid #e5ebf3;
+  border-radius: 14px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  overflow: hidden;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  &:hover { border-color: #c8d8eb; box-shadow: 0 12px 30px #203e6510; transform: translateY(-2px); }
+  .top {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    color: #3978d5;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .1em;
+  }
+  h3 {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    margin: 18px 0 12px;
+    color: #1b2e49;
+    font-size: clamp(18px, 2vw, 22px) !important;
+    line-height: 1.35 !important;
+    font-weight: 750;
+    letter-spacing: -.025em;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+  p {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    color: #718096;
+    font-size: 14px !important;
+    line-height: 1.8 !important;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .tags {
+    display: flex;
+    width: 100%;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .tags span {
+    max-width: 100%;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #526982;
+    background: #f1f5fa;
+    padding: 7px 10px;
+    border-radius: 20px;
+    overflow-wrap: anywhere;
+  }
+`;
 const TwoCol = styled.div`display:grid;grid-template-columns:1fr 1fr;gap:60px;
  @media(max-width:760px){grid-template-columns:1fr;gap:34px}`;
 const Body = styled.p`font-size:16px;line-height:1.9;color:#66768c;margin-top:18px`;
@@ -148,7 +213,7 @@ const Home = () => {
       <Section id="experience"><SectionHead><div><Eyebrow>{t.careerHistory}</Eyebrow><H2>{t.experienceTitle}</H2></div><SectionIntro>{t.experienceIntro}</SectionIntro></SectionHead><Timeline>{t.career.map(milestone)}</Timeline></Section>
       <Section id="education"><SectionHead><div><Eyebrow>{t.educationBackground}</Eyebrow><H2>{t.qualifications}</H2></div></SectionHead><Timeline>{t.degrees.map(milestone)}</Timeline></Section>
       <Section id="skills"><SectionHead><div><Eyebrow>{t.toolkit}</Eyebrow><H2>{t.skillsTitle}</H2></div><SectionIntro>{t.skillsIntro}</SectionIntro></SectionHead><TwoCol><div><CourseHeading>{t.technicalSkills}</CourseHeading><Stack>{t.skills.map(x => <StackTag key={x}>{x}</StackTag>)}</Stack><Body>{t.strengths}</Body></div><div><CourseHeading>{t.certifications}</CourseHeading><Timeline>{t.certs.map((x, i) => milestone(['', x, ''], i))}</Timeline><CourseHeading style={{ marginTop: 32 }}>{t.languages}</CourseHeading><Stack>{t.langs.map(x => <StackTag key={x}>{x}</StackTag>)}</Stack></div></TwoCol></Section>
-      <Section id="research-projects"><SectionHead><div><Eyebrow>{t.researchDev}</Eyebrow><H2>{t.researchProjects}</H2></div><SectionIntro>{t.researchProjectsIntro}</SectionIntro></SectionHead><ProjectGrid>{t.researchProjects.map((p, i) => <Project key={i}><div className="top"><FiLayers size={23} /><span>{p[0]}</span></div><h3>{p[1]}</h3><p>{p[2]}</p><div className="tags"><span>{p[3]}</span><span>{p[4]}</span></div></Project>)}</ProjectGrid></Section>
+      <Section id="research-projects"><SectionHead style={{ display: "block", marginBottom: 30 }}><div><Eyebrow>{t.researchDev}</Eyebrow><H2>{t.researchProjects}</H2></div><SectionIntro style={{ maxWidth: 760, marginTop: 14 }}>{t.researchProjectsIntro}</SectionIntro></SectionHead><ProjectGrid>{t.researchProjects.map((p, i) => <Project key={i}><div className="top"><FiLayers size={23} /><span>{p[0]}</span></div><h3>{p[1]}</h3><p>{p[2]}</p><div className="tags"><span>{p[3]}</span><span>{p[4]}</span></div></Project>)}</ProjectGrid></Section>
       <Section id="contact" style={{ borderBottom: 0, paddingBottom: 45 }}>
         <Contact><div><Eyebrow>{t.start}</Eyebrow><H2 style={{ fontSize: 32 }}>{t.build}</H2><SectionIntro>{t.open}</SectionIntro></div>
         <span style={{ fontSize: 12, color: "#718096", fontWeight: 600 }}>
