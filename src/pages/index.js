@@ -1,7 +1,10 @@
+
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { FiArrowUpRight, FiGitBranch, FiDatabase, FiBarChart2, FiTruck, FiCode, FiBookOpen, FiMail, FiLayers, FiActivity, FiEye } from 'react-icons/fi';
+import translations from '../translations';
 
 const Container = styled.main`
   width: min(1160px, calc(100% - 48px)); margin: 0 auto;
@@ -16,12 +19,6 @@ const Brand = styled.a`display:inline-flex;align-items:center;gap:12px;font-size
   span{color:#3978d5;}
   img{width:50px;height:50px;object-fit:cover;object-position:center 30%;border-radius:50%;border:2px solid #dce8f7;box-shadow:0 3px 12px #183a641c}
   @media(max-width:640px){font-size:15px;gap:8px;img{width:42px;height:42px}}`;
-const Nav = styled.nav`
- display:flex;align-items:center;gap:30px;
- a{font-size:15px;font-weight:600;color:#58677c;text-decoration:none;transition:.2s}
- a:hover{color:#2868c7}
- @media(max-width:720px){gap:14px;a{font-size:13px} a:nth-child(3){display:none}}
-`;
 const Button = styled.a`
  display:inline-flex;align-items:center;gap:9px;padding:13px 18px;border-radius:8px;
  background:${p=>p.$light?'#fff':'#2468c7'};color:${p=>p.$light?'#1d3555':'#fff'};
@@ -81,80 +78,80 @@ const Contact=styled.div`background:#f2f6fb;border:1px solid #e4ebf4;border-radi
  @media(max-width:700px){display:block;padding:27px}`;
 const Footer=styled.footer`padding:30px 0 42px;display:flex;justify-content:space-between;gap:20px;color:#8793a4;font-size:13px;
  a{color:#64748b;text-decoration:none;margin-left:16px} @media(max-width:560px){display:block;line-height:2.2}`;
-const projects=[
- {icon:FiBarChart2,title:'Mining KPI Intelligence',desc:'An operational analytics workflow for consolidating mining data, transforming source files and monitoring business-critical KPIs through reporting and dashboards.',tags:['Python','SQL Server','Pandas','Power BI','ETL']},
- {icon:FiActivity,title:'Predictive Cycle Time Modelling',desc:'Machine learning experimentation on haulage-cycle data, including feature engineering, categorical encoding and model evaluation to support operational decision-making.',tags:['XGBoost','Scikit-learn','TensorFlow','Feature Engineering']},
- {icon:FiEye,title:'Computer Vision for Vehicle Analytics',desc:'Video analytics workflow for detecting and counting vehicles in recorded traffic footage, with frame processing, inference and progress monitoring.',tags:['PyTorch','OpenCV','Computer Vision','Video Analytics']},
- {icon:FiLayers,title:'Enterprise Data Pipeline Platform',desc:'Orchestrated data ingestion and transformation workflows integrating structured data sources, reusable Kedro pipelines and scheduled Airflow execution.',tags:['Kedro','Apache Airflow','SQL Server','Python']},
- {icon:FiDatabase,title:'Intelligent PDF Data Extraction',desc:'Batch document-processing pipeline combining PDF conversion, image preprocessing, OCR, field extraction, validation and structured output storage.',tags:['Tesseract OCR','OpenCV','MinIO','Pandas']},
- {icon:FiGitBranch,title:'Enterprise Knowledge Assistant',desc:'A retrieval-oriented assistant concept for querying internal documents through a language-model backend and an API-driven application interface.',tags:['Ollama','FastAPI','React','RAG']},
-];
-export default function Home(){
+
+const LanguageControls = styled.div`
+ display:flex;align-items:center;gap:5px;margin-left:8px;flex-shrink:0;
+ button{border:1px solid #dce5f0;background:#fff;color:#52647b;border-radius:7px;padding:7px 9px;font-size:12px;font-weight:800;cursor:pointer;transition:.2s}
+ button[aria-pressed="true"]{background:#2468c7;color:#fff;border-color:#2468c7}
+ button:focus-visible{outline:3px solid #9dc2f4;outline-offset:2px}
+`;
+const HeaderRight=styled.div`display:flex;align-items:center;gap:12px;@media(max-width:960px){gap:6px}`;
+const Nav = styled.nav`
+ display:flex;align-items:center;gap:22px;flex-wrap:wrap;
+ a{font-size:14px;font-weight:600;color:#58677c;text-decoration:none;transition:.2s;white-space:nowrap}
+ a:hover{color:#2868c7}
+ @media(max-width:960px){gap:12px;a{font-size:12px}}
+ @media(max-width:760px){display:none}
+`;
+const DataList=styled.div`display:grid;gap:18px`;
+const CourseHeading=styled.h3`font-size:19px;color:#1d304a;margin:0 0 12px`;
+const Home=()=>{
+ const [lang,setLang]=useState('EN');
+ const [ready,setReady]=useState(false);
+ useEffect(()=>{
+   try { const saved=window.localStorage.getItem('portfolio-language'); if(['EN','FR','KR'].includes(saved)) setLang(saved); } catch(e) {}
+   setReady(true);
+ },[]);
+ useEffect(()=>{
+   if(!ready) return;
+   try { window.localStorage.setItem('portfolio-language',lang); } catch(e) {}
+   document.documentElement.lang=lang==='KR'?'ko':lang.toLowerCase();
+ },[lang,ready]);
+ const t=translations[lang];
+ const projects=[
+  {icon:FiBarChart2,title:'Mining KPI Intelligence',tags:['Python','SQL Server','Pandas','Power BI','ETL']},
+  {icon:FiActivity,title:'Predictive Cycle Time Modelling',tags:['XGBoost','Scikit-learn','TensorFlow','Feature Engineering']},
+  {icon:FiEye,title:'Computer Vision for Vehicle Analytics',tags:['PyTorch','OpenCV','Computer Vision','Video Analytics']},
+  {icon:FiLayers,title:'Enterprise Data Pipeline Platform',tags:['Kedro','Apache Airflow','SQL Server','Python']},
+  {icon:FiDatabase,title:'Intelligent PDF Data Extraction',tags:['Tesseract OCR','OpenCV','MinIO','Pandas']},
+  {icon:FiGitBranch,title:'Enterprise Knowledge Assistant',tags:['Ollama','FastAPI','React','RAG']}
+ ];
+ const skills=['Python','SQL','Pandas','Scikit-learn','TensorFlow / Keras','PyTorch','XGBoost','OpenCV','Kedro','Apache Airflow','Docker','MinIO','FastAPI','Power BI','React'];
+ const navIds=['about','expertise','projects','experience','teaching','publications','contact'];
+ const milestone=(item,i)=><Milestone key={i}><small>{item[0]}</small><h3>{item[1]}</h3>{item[2]&&<p>{item[2]}</p>}</Milestone>;
  return <>
-  <Head><title>Dahouda Mwamba Kasongo, Ph.D. | AI & Data Science</title><meta name="description" content="Professional portfolio of Dahouda Mwamba Kasongo, Ph.D. — Senior Data Scientist and AI Engineer focused on applied AI, data engineering and mining intelligence."/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#ffffff"/></Head>
+  <Head><title>{lang==='FR'?'Dahouda Mwamba Kasongo, Ph.D. | IA et Science des données':lang==='KR'?'Dahouda Mwamba Kasongo 박사 | AI 및 데이터 과학':'Dahouda Mwamba Kasongo, Ph.D. | AI & Data Science'}</title><meta name="description" content={t.hero}/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#ffffff"/></Head>
   <Container>
-   <Header><Brand href="#home"><Image src="/images/profile.jpg" alt="Dahouda Mwamba Kasongo" width={100} height={100} priority /><span>Dahouda Mwamba</span></Brand><Nav><a href="#about">About</a><a href="#expertise">Expertise</a><a href="#projects">Projects</a><a href="#career">Career</a><a href="#teaching">Teaching</a><a href="#publications">Publications</a><a href="#contact">Contact</a></Nav></Header>
+   <Header>
+    <Brand href="#home"><Image src="/images/profile.jpg" alt="Dahouda Mwamba Kasongo" width={100} height={100} priority/><span>Dahouda Mwamba</span></Brand>
+    <HeaderRight>
+     <Nav>{t.nav.map((label,i)=><a key={navIds[i]} href={'#'+navIds[i]}>{label}</a>)}</Nav>
+     <LanguageControls aria-label="Select language">
+      {['FR','EN','KR'].map(code=><button key={code} type="button" aria-label={code==='FR'?'Français':code==='EN'?'English':'한국어'} aria-pressed={lang===code} onClick={()=>setLang(code)}>{code}</button>)}
+     </LanguageControls>
+    </HeaderRight>
+   </Header>
    <Hero id="home">
-    <div><Eyebrow>Applied AI · Data Science · Engineering</Eyebrow><H1>Turning complex data into <span>intelligent solutions.</span></H1><Lead>I am Dahouda Mwamba Kasongo, Ph.D. — a Senior Data Scientist and AI Engineer building data platforms, machine learning systems and practical AI solutions for industrial challenges.</Lead><HeroActions><Button href="#projects">Explore selected work <FiArrowUpRight/></Button><Button $light href="#contact">Get in touch <FiMail/></Button></HeroActions></div>
-    <ProfilePanel><Monogram>DMK</Monogram><PanelCaption><strong>Research-minded. Engineering-driven.</strong>Connecting software engineering, applied machine learning and data engineering to deliver solutions that work in real operational environments.</PanelCaption><div style={{position:'relative',fontSize:13,color:'#6f8097',letterSpacing:'.1em',fontWeight:700}}>LUBUMBASHI · DEMOCRATIC REPUBLIC OF THE CONGO</div></ProfilePanel>
+    <div><Eyebrow>{t.eyebrow}</Eyebrow><H1>{t.headline1} <span>{t.headline2}</span></H1><Lead>{t.hero}</Lead><HeroActions><Button href="#projects">{t.explore} <FiArrowUpRight/></Button><Button $light href="#contact">{t.contactBtn} <FiMail/></Button></HeroActions></div>
+    <ProfilePanel><Monogram>DMK</Monogram><PanelCaption><strong>{t.panelTitle}</strong>{t.panel}</PanelCaption><div style={{position:'relative',fontSize:13,color:'#6f8097',letterSpacing:'.1em',fontWeight:700}}>{t.location}</div></ProfilePanel>
    </Hero>
-   <Stats><Stat><strong>Ph.D.</strong><span>Software Engineering</span></Stat><Stat><strong>AI + Data</strong><span>Research and industrial applications</span></Stat><Stat><strong>End-to-end</strong><span>From data pipelines to deployment</span></Stat></Stats>
-   <Section id="about"><SectionHead><div><Eyebrow>Profile</Eyebrow><H2>About me</H2></div><SectionIntro>A blend of academic research, software engineering and applied data science.</SectionIntro></SectionHead><TwoCol><div><Body>I am a software engineer and data scientist with a Ph.D. in Software Engineering from Hanyang University, South Korea. My work focuses on applying artificial intelligence and modern data engineering practices to solve complex, real-world problems.</Body><Body>In the mining and industrial context, I work across data analytics and reporting, ETL development, KPI monitoring, machine learning and computer vision. I also enjoy teaching, mentoring and helping teams build practical technical capabilities.</Body></div><div><H2 style={{fontSize:24,marginTop:0}}>What drives my work</H2><Body>Build reliable data foundations. Develop models that answer meaningful operational questions. Turn prototypes into maintainable systems. Share knowledge through research, teaching and collaboration.</Body></div></TwoCol></Section>
-   <Section id="expertise"><SectionHead><div><Eyebrow>Capabilities</Eyebrow><H2>Areas of expertise</H2></div><SectionIntro>Technical capabilities spanning the full lifecycle of data and intelligent applications.</SectionIntro></SectionHead><ExpertiseGrid>
-    <Skill><FiGitBranch/><h3>Artificial Intelligence</h3><p>Machine learning, deep learning, predictive modelling, model evaluation and applied AI.</p></Skill>
-    <Skill><FiDatabase/><h3>Data Engineering</h3><p>ETL pipelines, data integration, SQL databases, orchestration and medallion architecture.</p></Skill>
-    <Skill><FiBarChart2/><h3>Analytics & BI</h3><p>KPI frameworks, operational reporting, data quality, dashboards and decision support.</p></Skill>
-    <Skill><FiTruck/><h3>Industrial Intelligence</h3><p>Mining analytics, fleet-cycle analysis, computer vision and operational optimization.</p></Skill>
-   </ExpertiseGrid><Stack>{['Python','SQL','Pandas','Scikit-learn','TensorFlow / Keras','PyTorch','XGBoost','OpenCV','Kedro','Apache Airflow','Docker','MinIO','FastAPI','Power BI','React'].map(x=><StackTag key={x}>{x}</StackTag>)}</Stack></Section>
-   <Section id="projects"><SectionHead><div><Eyebrow>Selected work</Eyebrow><H2>Projects & applications</H2></div><SectionIntro>Representative work based on my professional focus. Some industrial implementations are private and are presented here at a high level.</SectionIntro></SectionHead><ProjectGrid>{projects.map((p)=><Project key={p.title}><div className="top"><p.icon size={23}/><FiArrowUpRight/></div><h3>{p.title}</h3><p>{p.desc}</p><div className="tags">{p.tags.map(t=><span key={t}>{t}</span>)}</div></Project>)}</ProjectGrid></Section>
-   <Section id="experience"><SectionHead><div><Eyebrow>Background</Eyebrow><H2>Education & experience</H2></div><SectionIntro>Academic foundations and professional practice.</SectionIntro></SectionHead><TwoCol><div><H2 style={{fontSize:23,marginTop:0}}>Education</H2><Timeline><Milestone><small>Doctoral degree</small><h3>Ph.D. in Software Engineering</h3><p>Hanyang University · Seoul, South Korea</p></Milestone><Milestone><small>Master's degree · 2020</small><h3>M.S. in Software Engineering</h3><p>Hanyang University · Seoul, South Korea</p></Milestone><Milestone><small>Undergraduate</small><h3>B.S. in Information Systems Engineering</h3><p>University Protestant of Lubumbashi · D.R. Congo</p></Milestone></Timeline></div><div><H2 style={{fontSize:23,marginTop:0}}>Professional focus</H2><Timeline><Milestone><small>Current</small><h3>Senior Data Scientist</h3><p>Mining industry · Data analytics, reporting, ETL pipelines, KPI monitoring and applied machine learning.</p></Milestone><Milestone><small>Academic experience</small><h3>Associate Professor</h3><p>Teaching, academic supervision, course development and technical mentoring.</p></Milestone><Milestone><small>Ongoing initiative</small><h3>AI Lab development</h3><p>Supporting applied AI initiatives, experimentation and knowledge sharing.</p></Milestone></Timeline></div></TwoCol></Section>
-   <Section id="research"><SectionHead><div><Eyebrow>Knowledge sharing</Eyebrow><H2>Research & academic profile</H2></div><SectionIntro>Research themes and academic contributions documented in my CV.</SectionIntro></SectionHead><TwoCol><div><FiBookOpen color="#3978d5" size={25}/><Body>My research spans machine learning, deep learning, neural architecture search, feature extraction, hyperparameter optimization, image classification, wireless communication networks and intelligent systems. My doctoral research focused on NASNet-based feature extraction with a modular neural network for image classification with hyperparameter optimization.</Body></div><div><FiCode color="#3978d5" size={25}/><Body>My applied research includes automated Big Data analysis model recommendation, model selection, feature engineering, hyperparameter tuning, anomaly detection in time-series data and software development for simulation systems.</Body></div></TwoCol></Section>
-   <Section id="teaching"><SectionHead><div><Eyebrow>Academic contributions</Eyebrow><H2>Teaching & academic appointments</H2></div><SectionIntro>University teaching, visiting appointments and technical courses listed in my CV.</SectionIntro></SectionHead><TwoCol><div><H2 style={{fontSize:23,marginTop:0}}>Visiting professor</H2><Body>UNILU (Math-Info), UDBL (ESIS), UHN, ISTL, Maria Malkia, ISTA/Kolwezi and UJKOL.</Body><H2 style={{fontSize:23,marginTop:30}}>Master's-level courses</H2><Stack>{['Advanced Machine Learning','Deep Learning','Advanced Database','Data Mining and Big Data','Verification of Models','Software Testing'].map(x=><StackTag key={x}>{x}</StackTag>)}</Stack></div><div><H2 style={{fontSize:23,marginTop:0}}>Bachelor's-level courses</H2><Stack>{['Artificial Intelligence in Computer Networks','Artificial Intelligence','Software Engineering','Machine Learning','AI Programming','Cloud Computing','Object-Oriented Programming','Web Programming'].map(x=><StackTag key={x}>{x}</StackTag>)}</Stack><Body>Teaching assistant appointments also included Web and Internet Technology, Introduction to Java Android Programming and AI research for wireless communication.</Body></div></TwoCol></Section>
-   <Section id="publications"><SectionHead><div><Eyebrow>Scientific output</Eyebrow><H2>Publications & conference papers</H2></div><SectionIntro>Bibliographic records transcribed from my CV. Google Scholar provides the live author profile and citation information.</SectionIntro></SectionHead><H2 style={{fontSize:23,marginTop:0}}>Journal publications</H2><Timeline>
-    <Milestone><small>2023 · Electronics</small><h3>Machine Learning-Based Solutions for Handover Decisions in Non-Terrestrial Networks</h3><p>MK Dahouda, S Jin, I Joe · Electronics 12 (8), 1759</p></Milestone>
-    <Milestone><small>2022 · Electronics</small><h3>Optimal Power Allocation with Sectored Cells for Sum-Throughput Maximization in Wireless-Powered Communication Networks Based on Hybrid SDMA/NOMA</h3><p>J Maeng, MK Dahouda, I Joe · Electronics 11 (6), 844</p></Milestone>
-    <Milestone><small>2022 · IEEE Access</small><h3>Neural Architecture Search Net-Based Feature Extraction With Modular Neural Network for Image Classification of Copper/Cobalt Raw Minerals</h3><p>MK Dahouda, I Joe · IEEE Access 10, 72253–72262</p></Milestone>
-    <Milestone><small>2022 · Wireless Personal Communications</small><h3>A NOMA-Combined Hybrid Approach for SDMA Improvement in Wireless Powered Communication Networks</h3><p>J Maeng, MK Dahouda, I Joe · Wireless Personal Communications 122 (1), 877–895</p></Milestone>
-    <Milestone><small>2021 · IEEE Access</small><h3>A deep-learned embedding technique for categorical features encoding</h3><p>MK Dahouda, I Joe · IEEE Access 9, 114381–114391</p></Milestone>
-    <Milestone><small>2023 · IEEE Access</small><h3>Character Behavior Automation using Deep Reinforcement Learning</h3><p>H Lee, MK Dahouda, I Joe · IEEE Access 11, 101435–101442</p></Milestone>
-   </Timeline><H2 style={{fontSize:23,marginTop:44}}>Conference papers</H2><Timeline>
-    <Milestone><small>2025</small><h3>Explanatory LSTM-AE-based Anomaly Detection for Time Series Data in Marine Transportation</h3><p>MK Dahouda, I Joe · The CV lists IEEE Access 10.</p></Milestone>
-    <Milestone><small>2020</small><h3>Ensemble Machine Learning Models for Simulating the Missile Defense System</h3><p>S Jin, MK Dahouda, I Joe · Data Science and Algorithms in Systems</p></Milestone>
-    <Milestone><small>2020</small><h3>A DTN Gateway-Based Architecture for Web Access in Space Internet</h3><p>MK Dahouda, D Lim, K Lee, I Joe · Intelligent Algorithms in Software Engineering</p></Milestone>
-    <Milestone><small>2020</small><h3>DTN-SMTP: A Novel Mail Transfer Protocol with Minimized Interactions for Space Internet</h3><p>D Lee, J Kang, MK Dahouda, I Joe, K Lee · Computational Science and Its Applications (ICCSA 2020)</p></Milestone>
-    <Milestone><small>2021</small><h3>Mongolian Automatic License Plate Recognition System with Convolutional Neural Networks</h3><p>Authors as listed in the CV · Korean Society publication, 19 (1), 31–34</p></Milestone>
-    <Milestone><small>2021</small><h3>A Deep Learning-based for Spanish and English Sentiment Analysis</h3><p>Authors as listed in the CV · Korean Society publication, 19 (1), 14–16</p></Milestone>
-    <Milestone><small>Year not specified in CV</small><h3>Language-based Classification of Words using Deep Learning</h3><p>ND Zacharia, MK Dahouda, I Joe · Proceedings of the Korea Information Processing Society Conference, 411–414</p></Milestone>
-   </Timeline><HeroActions><Button href="https://scholar.google.com/citations?user=Bzi--3IAAAAJ&hl=en" target="_blank" rel="noreferrer">View Google Scholar <FiArrowUpRight/></Button><Button $light href="https://github.com/dahouda2pro" target="_blank" rel="noreferrer">Explore GitHub <FiArrowUpRight/></Button></HeroActions></Section>
-   <Section id="career"><SectionHead><div><Eyebrow>Career history</Eyebrow><H2>Professional experience</H2></div><SectionIntro>Positions, research appointments, internships and professional training recorded in my CV.</SectionIntro></SectionHead><Timeline>
-    <Milestone><small>September 2025 – Present</small><h3>Senior Data Scientist · Kamoto Copper Company (KCC)</h3><p>Mining industry · Data science and analytics.</p></Milestone>
-    <Milestone><small>February 2023 – Present · Dates as stated in CV</small><h3>Associate Professor · Protestant University of Lubumbashi</h3><p>University teaching and academic activities.</p></Milestone>
-    <Milestone><small>October – November 2022</small><h3>Teaching Assistant · AI research for wireless communication</h3></Milestone>
-    <Milestone><small>May – August 2022</small><h3>Back-end Web Developer · Metamix NFT Marketplace</h3></Milestone>
-    <Milestone><small>April 2020 – 2023</small><h3>Researcher · Automated Big Data analysis model recommendation</h3><p>Machine learning, deep learning models and hyperparameter optimization.</p></Milestone>
-    <Milestone><small>February – April 2019</small><h3>Grand Challenge of Artificial Intelligence Competition · Korea</h3></Milestone>
-    <Milestone><small>September 2018</small><h3>Master's Student · Mobile Network Intelligence Lab, Hanyang University</h3></Milestone>
-    <Milestone><small>April – June 2017</small><h3>Teaching Assistant · MULOLWA ISIM, Lubumbashi</h3><p>Web and Internet Technology.</p></Milestone>
-    <Milestone><small>March – April 2017</small><h3>Teaching Assistant · Protestant University of Lubumbashi</h3><p>Introduction to Java Android Programming.</p></Milestone>
-    <Milestone><small>December 2015 – January 2016</small><h3>Intern · Kamoto Copper Company (KCC), Kolwezi</h3><p>Computer Network Department · Technician.</p></Milestone>
-    <Milestone><small>February – March 2013</small><h3>Professional Training · Afrinet Company, Lubumbashi</h3><p>IT Department · Technician.</p></Milestone>
-    <Milestone><small>November – December 2011 and November – December 2010</small><h3>Professional Training · Vodacom (Vodanet ISP), Lubumbashi</h3><p>Technician.</p></Milestone>
-   </Timeline></Section>
-   <Section id="education"><SectionHead><div><Eyebrow>Academic background</Eyebrow><H2>Education & qualifications</H2></div></SectionHead><Timeline>
-    <Milestone><small>2020 – 2023</small><h3>Doctorate · Computer Software Engineering</h3><p>Hanyang University, Korea. Research: “NASNet-based Feature Extraction with Modular Neural Network for Image Classification with HPO”.</p></Milestone>
-    <Milestone><small>2018 – 2020</small><h3>Master's · Computer Software Engineering</h3><p>Hanyang University, Korea. Thesis: “A DTN gateway-based architecture for web access in the Internet space”.</p></Milestone>
-    <Milestone><small>2017 – 2018</small><h3>Korean Proficiency Test · TOPIK Level 3</h3><p>Sunmoon University, Korea.</p></Milestone>
-    <Milestone><small>2008 – 2016</small><h3>Bachelor's Degree · Computer Science</h3><p>Protestant University of Lubumbashi, D.R. Congo. Information Systems Engineering. Project: “Study of the establishment of an information sharing platform between the territorial divisions of a city”.</p></Milestone>
-    <Milestone><small>1999 – 2006</small><h3>Scientific Section Diploma</h3><p>Kiwele High School, Lubumbashi, D.R. Congo.</p></Milestone>
-    <Milestone><small>1992 – 1998</small><h3>Primary School Certificate</h3><p>Malkia Wa Amani Primary School, Lubumbashi, D.R. Congo.</p></Milestone>
-   </Timeline></Section>
-   <Section id="skills"><SectionHead><div><Eyebrow>Technical toolkit</Eyebrow><H2>Skills, certifications & languages</H2></div><SectionIntro>Skills and professional development recorded in my CV, together with technologies used in my applied work.</SectionIntro></SectionHead><TwoCol><div><H2 style={{fontSize:23,marginTop:0}}>Technical skills</H2><Stack>{['Microsoft Word','Microsoft Excel','PowerPoint','Outlook','MySQL','PHP','SQL','Python','React.js','Next.js','UML','HTML','CSS','WordPress','Windows 7/8/10','Linux','Windows Server','End User Computing – Level 1 / Basic Support Service Desk','Machine Learning','Deep Learning','TensorFlow','Keras','OpenCV','Kedro','Apache Airflow','MinIO','Power BI'].map(x=><StackTag key={x}>{x}</StackTag>)}</Stack><Body>CV-listed strengths: communication, decision-making through analysis of alternatives, and generating and integrating new ideas into practical results.</Body></div><div><H2 style={{fontSize:23,marginTop:0}}>Certifications & training</H2><Timeline><Milestone><h3>Advanced NLP with Python for Machine Learning</h3></Milestone><Milestone><h3>Applied Machine Learning: Algorithms</h3></Milestone><Milestone><h3>Building and Deploying Deep Learning Applications with TensorFlow</h3></Milestone><Milestone><h3>Building Deep Learning Applications with Keras 2.0</h3></Milestone><Milestone><h3>Deep Learning: Image Recognition</h3></Milestone></Timeline><H2 style={{fontSize:23,marginTop:36}}>Languages</H2><Stack>{['French · Fluent','Lingala · Fluent','Swahili · Fluent','English · Advanced','Korean · Intermediate'].map(x=><StackTag key={x}>{x}</StackTag>)}</Stack></div></TwoCol></Section>
-   <Section id="cv-projects"><SectionHead><div><Eyebrow>Research & development</Eyebrow><H2>Research projects</H2></div><SectionIntro>Specific industry and research projects named in my CV.</SectionIntro></SectionHead><ProjectGrid>
-    <Project><div className="top"><FiActivity size={23}/><span>2023</span></div><h3>INS Integrated Test Simulator</h3><p>Software development for an integrated navigation equipment test simulator, including navigation equipment simulation and external-object creation simulation.</p><div className="tags"><span>HD Hyundai Global Service Co., Ltd.</span><span>Software Development</span></div></Project>
-    <Project><div className="top"><FiLayers size={23}/><span>2020</span></div><h3>Automated Big Data Analysis Model Recommendation</h3><p>Automation technology to characterize data and problems and recommend Big Data analysis models, including model selection, feature engineering, hyperparameter tuning and model deployment.</p><div className="tags"><span>Securelayer Co., Ltd.</span><span>AutoML</span><span>Researcher</span></div></Project>
-   </ProjectGrid></Section>
-   <Section id="contact" style={{borderBottom:0,paddingBottom:45}}><Contact><div><Eyebrow>Start a conversation</Eyebrow><H2 style={{fontSize:32}}>Let's build something meaningful.</H2><SectionIntro>Open to professional collaborations, applied AI initiatives, research discussions and teaching opportunities.</SectionIntro></div><span style={{fontSize:12,color:"#718096",fontWeight:600}}><a href="mailto:dahouda37@gmail.com" style={{color:"#2468c7",fontWeight:700,textDecoration:"none"}}>dahouda37@gmail.com</a></span></Contact></Section>
-   <Footer><span>© {new Date().getFullYear()} Dahouda Mwamba Kasongo. All rights reserved.</span><span><a href="https://www.linkedin.com/in/dahouda2mwamba/" target="_blank" rel="noreferrer">LinkedIn</a><a href="https://www.researchgate.net/profile/Dahouda-Mwamba" target="_blank" rel="noreferrer">ResearchGate</a><a href="https://github.com/dahouda2pro" target="_blank" rel="noreferrer">GitHub</a><a href="https://scholar.google.com/citations?user=Bzi--3IAAAAJ&hl=en" target="_blank" rel="noreferrer">Google Scholar</a></span></Footer>
+   <Stats><Stat><strong>Ph.D.</strong><span>{t.stat1}</span></Stat><Stat><strong>AI + Data</strong><span>{t.stat2}</span></Stat><Stat><strong>End-to-end</strong><span>{t.stat3}</span></Stat></Stats>
+   <Section id="about"><SectionHead><div><Eyebrow>{t.profile}</Eyebrow><H2>{t.aboutTitle}</H2></div><SectionIntro>{t.aboutIntro}</SectionIntro></SectionHead><TwoCol><div><Body>{t.about1}</Body><Body>{t.about2}</Body></div><div><H2 style={{fontSize:24,marginTop:0}}>{t.drives}</H2><Body>{t.drivesText}</Body></div></TwoCol></Section>
+   <Section id="expertise"><SectionHead><div><Eyebrow>{t.capabilities}</Eyebrow><H2>{t.expertiseTitle}</H2></div><SectionIntro>{t.expertiseIntro}</SectionIntro></SectionHead><ExpertiseGrid>
+    <Skill><FiGitBranch/><h3>{t.ai}</h3><p>{t.aiDesc}</p></Skill><Skill><FiDatabase/><h3>{t.de}</h3><p>{t.deDesc}</p></Skill><Skill><FiBarChart2/><h3>{t.bi}</h3><p>{t.biDesc}</p></Skill><Skill><FiTruck/><h3>{t.industrial}</h3><p>{t.industrialDesc}</p></Skill>
+   </ExpertiseGrid><Stack>{skills.map(x=><StackTag key={x}>{x}</StackTag>)}</Stack></Section>
+   <Section id="projects"><SectionHead><div><Eyebrow>{t.selected}</Eyebrow><H2>{t.projectsTitle}</H2></div><SectionIntro>{t.projectsIntro}</SectionIntro></SectionHead><ProjectGrid>{projects.map((p,i)=><Project key={p.title}><div className="top"><p.icon size={23}/><FiArrowUpRight/></div><h3>{p.title}</h3><p>{t.projectDescs[i]}</p><div className="tags">{p.tags.map(tag=><span key={tag}>{tag}</span>)}</div></Project>)}</ProjectGrid></Section>
+   <Section id="career"><SectionHead><div><Eyebrow>{t.background}</Eyebrow><H2>{t.educationExperience}</H2></div><SectionIntro>{t.backgroundIntro}</SectionIntro></SectionHead><TwoCol><div><H2 style={{fontSize:23,marginTop:0}}>{t.education}</H2><Timeline>{milestone([t.doctoral,t.phd,t.hanyang],0)}{milestone([t.masters,t.master,t.hanyang],1)}{milestone([t.undergrad,t.bachelor,t.upl],2)}</Timeline></div><div><H2 style={{fontSize:23,marginTop:0}}>{t.professionalFocus}</H2><Timeline>{milestone([t.current,t.senior,t.seniorDesc],0)}{milestone([t.academic,t.associate,t.associateDesc],1)}{milestone([t.initiative,t.lab,t.labDesc],2)}</Timeline></div></TwoCol></Section>
+   <Section id="research"><SectionHead><div><Eyebrow>{t.knowledge}</Eyebrow><H2>{t.researchTitle}</H2></div><SectionIntro>{t.researchIntro}</SectionIntro></SectionHead><TwoCol><div><FiBookOpen color="#3978d5" size={25}/><Body>{t.research1}</Body></div><div><FiCode color="#3978d5" size={25}/><Body>{t.research2}</Body></div></TwoCol></Section>
+   <Section id="teaching"><SectionHead><div><Eyebrow>{t.academicContrib}</Eyebrow><H2>{t.teachingTitle}</H2></div><SectionIntro>{t.teachingIntro}</SectionIntro></SectionHead><TwoCol><div><CourseHeading>{t.visiting}</CourseHeading><Body>UNILU (Math-Info), UDBL (ESIS), UHN, ISTL, Maria Malkia, ISTA/Kolwezi and UJKOL.</Body><CourseHeading style={{marginTop:28}}>{t.coursesMasters}</CourseHeading><Stack>{t.masterCourses.map(x=><StackTag key={x}>{x}</StackTag>)}</Stack></div><div><CourseHeading>{t.coursesBachelor}</CourseHeading><Stack>{t.bachelorCourses.map(x=><StackTag key={x}>{x}</StackTag>)}</Stack><Body>{t.teachingNote}</Body></div></TwoCol></Section>
+   <Section id="publications"><SectionHead><div><Eyebrow>{t.scientific}</Eyebrow><H2>{t.pubTitle}</H2></div><SectionIntro>{t.pubIntro}</SectionIntro></SectionHead><CourseHeading>{t.journals}</CourseHeading><Timeline>{t.publications.map(milestone)}</Timeline><CourseHeading style={{marginTop:42}}>{t.conferences}</CourseHeading><Timeline>{t.conferencePubs.map(milestone)}</Timeline><HeroActions><Button href="https://scholar.google.com/citations?user=Bzi--3IAAAAJ&hl=en" target="_blank" rel="noreferrer">{t.scholar} <FiArrowUpRight/></Button><Button $light href="https://github.com/dahouda2pro" target="_blank" rel="noreferrer">{t.github} <FiArrowUpRight/></Button></HeroActions></Section>
+   <Section id="experience"><SectionHead><div><Eyebrow>{t.careerHistory}</Eyebrow><H2>{t.experienceTitle}</H2></div><SectionIntro>{t.experienceIntro}</SectionIntro></SectionHead><Timeline>{t.career.map(milestone)}</Timeline></Section>
+   <Section id="education"><SectionHead><div><Eyebrow>{t.educationBackground}</Eyebrow><H2>{t.qualifications}</H2></div></SectionHead><Timeline>{t.degrees.map(milestone)}</Timeline></Section>
+   <Section id="skills"><SectionHead><div><Eyebrow>{t.toolkit}</Eyebrow><H2>{t.skillsTitle}</H2></div><SectionIntro>{t.skillsIntro}</SectionIntro></SectionHead><TwoCol><div><CourseHeading>{t.technicalSkills}</CourseHeading><Stack>{t.skills.map(x=><StackTag key={x}>{x}</StackTag>)}</Stack><Body>{t.strengths}</Body></div><div><CourseHeading>{t.certifications}</CourseHeading><Timeline>{t.certs.map((x,i)=>milestone(['',x,''],i))}</Timeline><CourseHeading style={{marginTop:32}}>{t.languages}</CourseHeading><Stack>{t.langs.map(x=><StackTag key={x}>{x}</StackTag>)}</Stack></div></TwoCol></Section>
+   <Section id="research-projects"><SectionHead><div><Eyebrow>{t.researchDev}</Eyebrow><H2>{t.researchProjects}</H2></div><SectionIntro>{t.researchProjectsIntro}</SectionIntro></SectionHead><ProjectGrid>{t.researchProjects.map((p,i)=><Project key={i}><div className="top"><FiLayers size={23}/><span>{p[0]}</span></div><h3>{p[1]}</h3><p>{p[2]}</p><div className="tags"><span>{p[3]}</span><span>{p[4]}</span></div></Project>)}</ProjectGrid></Section>
+   <Section id="contact" style={{borderBottom:0,paddingBottom:45}}><Contact><div><Eyebrow>{t.start}</Eyebrow><H2 style={{fontSize:32}}>{t.build}</H2><SectionIntro>{t.open}</SectionIntro></div><span style={{fontSize:12,color:"#718096",fontWeight:600}}><a href="mailto:dahouda37@gmail.com" style={{color:"#2468c7",fontWeight:700,textDecoration:"none"}}>dahouda37@gmail.com</a></span></Contact></Section>
+   <Footer><span>© {new Date().getFullYear()} Dahouda Mwamba Kasongo. {t.rights}</span><span><a href="https://www.linkedin.com/in/dahouda2mwamba/" target="_blank" rel="noreferrer">{t.linkedin}</a><a href="https://www.researchgate.net/profile/Dahouda-Mwamba" target="_blank" rel="noreferrer">{t.researchgate}</a><a href="https://github.com/dahouda2pro" target="_blank" rel="noreferrer">GitHub</a><a href="https://scholar.google.com/citations?user=Bzi--3IAAAAJ&hl=en" target="_blank" rel="noreferrer">{t.scholarLink}</a></span></Footer>
   </Container>
  </>;
-}
+};
+export default Home;
